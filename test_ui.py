@@ -15,9 +15,13 @@ class TestUI(BaseCase):
         self.register_page.register(random_email, random_password)
         assert self.login_page.find(self.login_page.locators.TITLE)
 
-    @pytest.mark.parametrize("input_email", ["fjfjj89", "qw@qw", " @ ", ",@mail.ru"])
+    @pytest.mark.parametrize("input_email", ["fjfjj89", " @ ", ",@mail.ru"])
     def test_invalid_email_register(self, input_email, random_password):
         self.register_page.register(input_email, random_password)
+        assert self.driver.current_url == self.register_page.url
+
+    def test_email_without_domain_name_register(self, random_name, random_password):
+        self.register_page.register(f'{random_name}@{random_name}', random_password)
         assert self.driver.current_url == self.register_page.url
 
     def test_empty_email_register(self,  random_password):
@@ -71,10 +75,9 @@ class TestUI(BaseCase):
         assert self.driver.current_url == self.profile_page.url
         assert self.profile_page.find(self.profile_page.locators.TITLE)
 
-    @pytest.mark.parametrize("input_passwd", ["", "fjfjj89"])
-    def test_wrong_password_login(self, input_passwd, random_email, random_password):
+    def test_wrong_password_login(self, random_email, random_password):
         self.register_page.register(random_email, random_password)
-        self.login_page.login(random_email, input_passwd)
+        self.login_page.login(random_email, "wrong_pass")
 
         assert self.driver.current_url == self.login_page.url
         assert self.login_page.find(self.login_page.locators.WRONG_DETAILS_NOTIFICATION)
@@ -85,3 +88,12 @@ class TestUI(BaseCase):
         self.login_page.login(random_email, passwd)
 
         assert self.driver.current_url == self.login_page.url
+
+    def test_logout(self, random_email, random_password):
+        self.register_page.register(random_email, random_password)
+        self.login_page.login(random_email, random_password)
+        self.profile_page.click(self.profile_page.locators.LOGOUT)
+
+        assert self.driver.current_url == self.home_page.url
+        assert self.home_page.find(self.home_page.locators.LOGIN_HEADER)
+

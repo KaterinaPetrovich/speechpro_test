@@ -1,8 +1,5 @@
 from selenium.webdriver.common.by import By
 
-SIGN_UP_HEADER = (By.XPATH, '//a[@href = "/signup"]')
-LOGIN_HEADER = (By.XPATH, '//a[@href = "/login"]')
-
 
 class RegisterLocators:
     EMAIL_FIELD = (By.XPATH, '//input[@name = "email"]')
@@ -24,3 +21,9 @@ class LoginLocators:
 
 class ProfileLocators:
     TITLE = (By.XPATH, '//h1[text()[contains(.,"Welcome")]]')
+    LOGOUT = (By.XPATH, '//a[@href = "/logout"]')
+
+
+class HomeLocators:
+    SIGN_UP_HEADER = (By.XPATH, '//a[@href = "/signup"]')
+    LOGIN_HEADER = (By.XPATH, '//a[@href = "/login"]')
