@@ -30,3 +30,4 @@ def random_name():
 def random_password():
     random_str = ''.join(random.choice(string.ascii_letters) for _ in range(7))
     return random_str
+

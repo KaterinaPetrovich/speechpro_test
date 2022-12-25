@@ -10,6 +10,9 @@ class BasePage(object):
     def find(self, locator, timeout=20):
         return self.wait(timeout).until(EC.presence_of_element_located(locator))
 
+    def is_present(self, locator):
+        return EC.presence_of_element_located(locator)
+
     def wait(self, timeout=None):
         if timeout is None:
             timeout = 20
